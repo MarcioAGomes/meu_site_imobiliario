@@ -9,25 +9,28 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "^7.2.0",
+    "@supabase/supabase-js": "^2.90.1",
+    "lucide-react": "^0.562.0",
     "next": "16.1.1",
-    "prisma": "^7.2.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@prisma/client": "^4.16.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "prisma": "^4.16.2",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "ts-node -P tsconfig.json -O \"{\\\"module\\\":\\\"commonjs\\\"}\" prisma/seed.ts"
   }
 }

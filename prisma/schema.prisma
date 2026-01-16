@@ -4,17 +4,26 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Definindo os tipos permitidos
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  LAND
 }
 
 model Property {
-  id           String   @id @default(uuid())
+  id           String       @id @default(cuid())
   title        String
+  type         PropertyType @default(APARTMENT) // Agora usa o Enum
   price        Float
-  type         String   // ex: "Apartamento", "Casa"
-  intent       String   // ex: "Venda", "Aluguel"
   city         String
+  neighborhood String
   bedrooms     Int
   area         Float
   imageUrl     String?
-  createdAt    DateTime @default(now())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 }
