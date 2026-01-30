@@ -19,6 +19,7 @@ async function getSupabase() {
   );
 }
 
+// FUNÇÃO PARA CRIAR
 export async function createProperty(formData: FormData) {
   const supabase = await getSupabase();
 
@@ -37,12 +38,10 @@ export async function createProperty(formData: FormData) {
     createdAt: new Date().toISOString(),
   };
 
-  // Verifique se sua tabela no banco chama "Property" ou "property"
-  // Use exatamente como está lá. Se for com P maiúsculo:
   const { error } = await supabase.from("Property").insert([propertyData]);
 
   if (error) {
-    console.error("Erro no Banco:", error.message);
+    console.error("Erro no Banco (Create):", error.message);
     throw new Error(error.message);
   }
 
@@ -50,9 +49,49 @@ export async function createProperty(formData: FormData) {
   revalidatePath("/admin");
 }
 
+// FUNÇÃO PARA ATUALIZAR (Adicionada agora)
+export async function updateProperty(id: string, formData: FormData) {
+  const supabase = await getSupabase();
+
+  const propertyData = {
+    title: formData.get("title") as string,
+    type: formData.get("type") as string,
+    price: Number(formData.get("price")) || 0,
+    neighborhood: formData.get("neighborhood") as string,
+    area: Number(formData.get("area")) || 0,
+    bedrooms: Number(formData.get("bedrooms")) || 0,
+    suites: Number(formData.get("suites")) || 0,
+    bathrooms: Number(formData.get("bathrooms")) || 0,
+    garage: Number(formData.get("garage")) || 0,
+    description: formData.get("description") as string || "",
+    imageUrls: formData.getAll("imageUrls") as string[],
+    updatedAt: new Date().toISOString(), // Opcional: registrar a data de edição
+  };
+
+  const { error } = await supabase
+    .from("Property")
+    .update(propertyData)
+    .eq("id", id);
+
+  if (error) {
+    console.error("Erro no Banco (Update):", error.message);
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin");
+}
+
+// FUNÇÃO PARA DELETAR
 export async function deleteProperty(id: string) {
   const supabase = await getSupabase();
-  await supabase.from("Property").delete().eq("id", id);
+  const { error } = await supabase.from("Property").delete().eq("id", id);
+  
+  if (error) {
+    console.error("Erro no Banco (Delete):", error.message);
+    throw new Error(error.message);
+  }
+
   revalidatePath("/");
   revalidatePath("/admin");
 }
