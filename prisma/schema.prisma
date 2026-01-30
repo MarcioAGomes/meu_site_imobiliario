@@ -15,15 +15,15 @@ enum PropertyType {
 }
 
 model Property {
-  id           String       @id @default(cuid())
+  id           String   @id @default(uuid())
   title        String
-  type         PropertyType @default(APARTMENT) // Agora usa o Enum
   price        Float
-  city         String
   neighborhood String
-  bedrooms     Int
+  city         String   @default("Joinville")
   area         Float
-  imageUrl     String?
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  bedrooms     Int
+  type         String   @default("HOUSE")
+  imageUrls    String[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
